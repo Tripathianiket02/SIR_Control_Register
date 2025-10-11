@@ -100,7 +100,7 @@ export const InitiatorLanding: React.FunctionComponent<IItProps> = (props: IItPr
   const onBlockRequestSearch = async (filterValue: string) => {
     const util = await Utilities();
     setUtility(util);
-    const filtered = await util.filterData(allData, filterValue, ["PlantCodeId", "ProjectName", "Location", "PONumber", "OTC", "Recurring", "POValue", "Total", "Actual", "CategoryId", "SubCategoryId", "AddTypeId", "BillingCycleId", "RenewalDate", "BillingMonthId", "YearId", "Budgeted", "Site", "Quantity", "Costperunit", "Total2"]);
+    const filtered = await util.filterData(allData, filterValue, ["PlantCodeId", "ProjectName", "Location", "PONumber", "OTC", "Recurring", "POValue", "Total", "Actual", "CategoryId", "SubCategory", "AddTypeId", "BillingCycleId", "RenewalDate", "BillingMonthId", "YearId", "Budgeted", "Site", "Quantity", "Costperunit", "Total2"]);
     setFilteredData(filtered);
     setItemOffset(0); // reset pagination
   };
@@ -249,13 +249,13 @@ export const InitiatorLanding: React.FunctionComponent<IItProps> = (props: IItPr
     { label: "PO Value", key: "POValue" },
     { label: "Total", key: "Total" },
     { label: "Actual", key: "Actual" },
-    { label: "Category", key: "CategoryId" },
-    { label: "Sub-Category", key: "SubCategoryId" },
-    { label: "Add Type", key: "AddTypeId" },
-    { label: "Billing Cycle", key: "BillingCycleId" },
+    { label: "Category", key: "Category" },
+    { label: "Sub-Category", key: "SubCategory" },
+    { label: "Add Type", key: "AddType" },
+    { label: "Billing Cycle", key: "BillingCycle" },
     { label: "Renewal Date", key: "RenewalDate" },
-    { label: "Payment Month", key: "BillingMonthId" },
-    { label: "Year", key: "YearId" },
+    { label: "Payment Month", key: "BillingMonth" },
+    { label: "Year", key: "Year" },
     { label: "Budgeted", key: "Budgeted" },
     { label: "Site", key: "Site" },
     { label: "Quantity", key: "Quantity" },
@@ -630,6 +630,7 @@ export const InitiatorLanding: React.FunctionComponent<IItProps> = (props: IItPr
                           <th style={{ textAlign: 'center' }}>Location</th>
                           <th style={{ textAlign: 'center' }}>Year</th>
                           <th style={{ textAlign: 'center' }}>Category</th>
+                          <th style={{ textAlign: 'center' }}>Domain</th>
                           <th style={{ textAlign: 'center' }}>Sub-Category</th>
                           <th style={{ textAlign: 'center' }}>Type</th>
                           <th style={{ textAlign: 'center' }}>Billing Cycle</th>
@@ -648,7 +649,8 @@ export const InitiatorLanding: React.FunctionComponent<IItProps> = (props: IItPr
                             <td >{row.Location}</td>
                             <td >{row.Year}</td>
                             <td >{row.Category}</td>
-                            <td >{row.SubCategoryId}</td>
+                            <td >{row.Domain}</td>
+                            <td >{row.SubCategory}</td>
                             <td >{row.AddType}</td>
                             <td >{row.BillingCycle}</td>
                             <td >{row.BillingMonth}</td>
@@ -669,6 +671,7 @@ export const InitiatorLanding: React.FunctionComponent<IItProps> = (props: IItPr
                           <th style={{ textAlign: 'center' }}>Plant Code</th>
                           <th style={{ textAlign: 'center' }}>Project Name</th>
                           <th style={{ textAlign: 'center' }}>Category</th>
+                          <th style={{ textAlign: 'center' }}>Domain</th>
                           <th style={{ textAlign: 'center' }}>Sub-Category</th>
                           <th style={{ textAlign: 'center' }}>Quantity</th>
                           <th style={{ textAlign: 'center' }}>Cost per Unit</th>
@@ -687,7 +690,8 @@ export const InitiatorLanding: React.FunctionComponent<IItProps> = (props: IItPr
                             <td>{row.PlantCodeId}</td>
                             <td>{row.ProjectName}</td>
                             <td >{row.Category}</td>
-                            <td >{row.SubCategoryId}</td>
+                            <td >{row.Domain}</td>
+                            <td >{row.SubCategory}</td>
                             <td >{row.Quantity}</td>
                             <td >{row.Costperunit}</td>
                             <td >{row.Total2}</td>

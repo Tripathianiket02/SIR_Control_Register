@@ -24,9 +24,14 @@ import BillCycleRequestsOps from '../../service/BAL/SPCRUD/BicycleMaster';
 //SiteMaster
 import { ISiteMaster } from '../../service/INTERFACE/ISiteMaster';
 import SiteRequestsOps from '../../service/BAL/SPCRUD/SiteMaster';
+//DomainMaster
+import { IDomainMaster } from '../../service/INTERFACE/IDomainMaster';
+import DomainMasterOps from '../../service/BAL/SPCRUD/DomainMaster';
 //Date
 import { DatePicker } from '@fluentui/react/lib/DatePicker';
 import { DayOfWeek } from '@fluentui/react';
+
+import { IITMaster } from '../../service/INTERFACE/IITMaster';
 
 import USESPCRUD, { ISPCRUD } from '../../service/BAL/SPCRUD/spcrud';
 import { BaseButton, IPersonaProps } from 'office-ui-fabric-react';
@@ -50,6 +55,7 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
   const [utility, setUtility] = React.useState<IUtilities>();
   const [plantMasterCollData, setPlantCollData] = useState<IPlantCodeMaster[]>();
   const [CategoryMasterData, setCategoryData] = useState<ICategoryMaster[]>();
+  const [newCategory, setNewCategory] = useState<IITMaster[]>();
   const [TypeMasterData, setTypeData] = useState<ITypeMaster[]>();
   const [YearMasterData, setYearData] = useState<IYearMaster[]>();
   const [MonthMasterData, setMonthData] = useState<IMonthMaster[]>();
@@ -61,6 +67,7 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
   const [testBrand, setBrandText] = React.useState<string[]>([]);
   const [user, setUser] = React.useState<IPersonaProps[]>();
   const [valuebudgeted, setvaluebudgeted] = useState(false);
+  const [Domain, setDomainData] = useState<IDomainMaster[]>();
   const [currentDate] = useState(getDate());
 
   const [isBudgetedPage, setIsBudgetedPage] = useState(false);
@@ -118,7 +125,7 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
       'PlantCodeId': parseInt(formValues.PlantCodeId),
       'Location': formValues.Location,
       'OTC': formValues.OTC,
-      'CategoryId': parseInt(formValues.Category),
+      'Category': formValues.Category,
       'SubCategoryId': parseInt(formValues.SubCategory),
     };
     if (props.requestType !== 'budgeted') {
@@ -143,6 +150,9 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
         PRRequest['BalanceQty'] = formValues.BalanceQty,
         PRRequest['TotalCost'] = formValues.TotalCost,
         PRRequest['SiteId'] = formValues.Site
+    }
+    if(formValues.Domain !== null && formValues.Domain !== undefined && formValues.Domain !== ''){
+       PRRequest['DomainId'] = formValues.Domain
     }
     console.log(formValues);
     console.log(PRRequest);
@@ -232,7 +242,8 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
     Site: '',
     ProcuredQty: '',
     BalanceQty: '',
-    TotalCost: ''
+    TotalCost: '',
+    Domain:''
   };
 
 
@@ -281,7 +292,7 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
         if (props.requestType === 'budgeted') {
           setvaluebudgeted(true)
         }
-        
+
         const plantColl = await PlantCodeRequestsOps().getPlantCodeData(props);
         setPlantCollData(plantColl);
 
@@ -303,7 +314,9 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
         const SiteData = await SiteRequestsOps().getSiteMasterData(props);
         setSiteData(SiteData);
 
-        
+        const DomainMasterData = await DomainMasterOps().getDomainMasterData(props);
+        setDomainData(DomainMasterData);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -352,6 +365,11 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
 
       {(formik: any) => (
         <><AutoSum formik={formik} />
+          {React.useEffect(() => {
+            if (formik.values.Category !== "Domain Component") {
+              formik.setFieldValue('Domain', '');
+            }
+          }, [formik.values.Category])}
           <div className='con-box'>
             <div className="new-request-container">
               <div className="row">
@@ -435,7 +453,7 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
                         formik.handleChange("Category");
                       }}>
                         <option value="">Select</option>
-                        {CategoryMasterData !== undefined ? Array.from(new Map(CategoryMasterData.map(item => [item.Category, item])).values()).map((Vend) => (<option key={Vend.Id} value={Vend.Id}>{Vend.Category}</option>)) : ''}
+                        {CategoryMasterData !== undefined ? Array.from(new Map(CategoryMasterData.map(item => [item.Category, item])).values()).map((Vend) => (<option key={Vend.Category} value={Vend.Category}>{Vend.Category}</option>)) : ''}
                       </select>
                       {formik.errors.Category ? (
                         <div
@@ -452,6 +470,40 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
                     </div>
                   </div>
                   <br></br>
+                  {/* Domain */}
+                  {(() => {
+                    const selectedCategory = CategoryMasterData?.find(item => item.Id == formik.values.Category);
+                    if (selectedCategory?.Category === "Domain Component") {
+                      return (
+                        <div className='col-md-3'>
+                          <label className='col-form-label'>Domain</label>
+                          <div>
+                            <select id='ddlDomain' className='form-control' {...getFieldProps(formik, 'Domain')} onChange={async (e) => {
+                              formik.setFieldValue('Domain', e.target.value);
+                              // await onChangeRequestType2(e, formik);
+                              //formik.handleChange("Domain");
+                            }}>
+                              <option value="">Select</option>
+                              {Domain !== undefined ? Array.from(new Map(Domain.map(item => [item.Domain, item])).values()).map((Vend) => (<option key={Vend.Id} value={Vend.Id}>{Vend.Domain}</option>)) : ''}
+                            </select>
+                            {formik.errors.Domain ? (
+                              <div
+                                style={{
+                                  paddingTop: 0,
+                                  color: "#B2484D",
+                                  fontSize: ".75rem",
+                                  fontFamily: "Segoe UI"
+                                }}
+                              >
+                                {JSON.stringify(formik.errors.Domain).replace(/"/g, '')}
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
                   {/* 5.Sub Category */}
                   <div className='col-md-3'>
                     <label className='col-form-label'>Sub Category</label>

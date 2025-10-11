@@ -3,9 +3,9 @@
   "configurations": [
     {
       "name": "Hosted workbench",
-      "type": "msedge",
+      "type": "chrome",
       "request": "launch",
-      "url": "https://{tenantDomain}/_layouts/workbench.aspx",
+      "url": "https://patelengineering365.sharepoint.com/sites/IT/Budget/_layouts/workbench.aspx",
       "webRoot": "${workspaceRoot}",
       "sourceMaps": true,
       "sourceMapPathOverrides": {

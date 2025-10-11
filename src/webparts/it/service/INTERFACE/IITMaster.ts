@@ -2,6 +2,8 @@
 export interface IITMaster {    
     PlantCodeId?: number;
     CategoryId?:number;
+    DomainId?: number;
+    Domain?: any;
     SubCategoryId?:number;
     SubCategory:any;
     AddTypeId?:number;

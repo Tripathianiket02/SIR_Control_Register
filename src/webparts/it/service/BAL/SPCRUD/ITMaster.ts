@@ -12,8 +12,8 @@ export default function IITRequestsOps() {
 // const getIITMasterData = async (strFilter: string, sorting: any,props: IItProps): Promise<IITMaster[]> => {
     const getIITMasterData = async (sorting: any,props: IItProps): Promise<IITMaster[]> => {
         return await (await spCrudOps).getData("IT"
-            , "*,PlantCode/PlantCode,Category/Category,Category/ID,SubCategory/SubCategory,SubCategory/ID,AddType/TypeName,AddType/ID,BillingCycle/BillingCycle,BillingCycle/ID,BillingMonth/Month,BillingMonth/Id,Year/Year,Year/ID,Editor/Title,Editor/ID,GroupApprover/Title,GroupApprover/Id,Site/Site,Site/ID"
-            , "PlantCode,Category,SubCategory,AddType,BillingCycle,BillingMonth,Year,Editor,GroupApprover,Site"
+            , "*,PlantCode/PlantCode,Category/Category,Category/ID,SubCategory/SubCategory,SubCategory/ID,AddType/TypeName,AddType/ID,BillingCycle/BillingCycle,BillingCycle/ID,BillingMonth/Month,BillingMonth/Id,Year/Year,Year/ID,Editor/Title,Editor/ID,GroupApprover/Title,GroupApprover/Id,Site/Site,Site/ID,Domain/Domain"
+            , "PlantCode,Category,SubCategory,AddType,BillingCycle,BillingMonth,Year,Editor,GroupApprover,Site,Domain"
             , ""
             , sorting
             , props).then(results => {
@@ -21,6 +21,7 @@ export default function IITRequestsOps() {
                 results.map((item: {PlantCodeId?: number;                    
                 CategoryId:any;
                 Category:any;
+                Domain:any;
                 SubCategory:any;
                 AddType:any;
                 Location :any;
@@ -58,7 +59,8 @@ export default function IITRequestsOps() {
                     PlantCodeId: item.PlantCode.PlantCode,
                     PlantCode:item.PlantCodeId,
                     CategoryId: item?.Category?.ID?? null,
-                    SubCategoryId:item?.SubCategory?.ID?? null, 
+                    SubCategoryId:item?.SubCategory?.ID?? null,
+                    Domain:item?.Domain?.Domain?? null, 
                     SubCategory:item?.SubCategory?.SubCategory?? null,
                     AddTypeId:item?.AddType?.ID?? null,
                     BillingCycleId:item?.BillingCycle?.ID?? null,
@@ -101,8 +103,8 @@ export default function IITRequestsOps() {
 
 const getITDatafilter = async (ArtId: string | number,props: IItProps): Promise<IITMaster[]> => {
     return await (await spCrudOps).getData("IT"
-            , "*,PlantCode/PlantCode,Category/Category,Category/ID,SubCategory/SubCategory,SubCategory/ID,AddType/TypeName,AddType/ID,BillingCycle/BillingCycle,BillingCycle/ID,BillingMonth/Month,BillingMonth/Id,Year/Year,Year/ID,Editor/Title,Editor/ID,GroupApprover/Title,GroupApprover/Id,Site/Site,Site/ID"
-            , "PlantCode,Category,SubCategory,AddType,BillingCycle,BillingMonth,Year,Editor,GroupApprover,Site"
+            , "*,PlantCode/PlantCode,Category/Category,Category/ID,SubCategory/SubCategory,SubCategory/ID,AddType/TypeName,AddType/ID,BillingCycle/BillingCycle,BillingCycle/ID,BillingMonth/Month,BillingMonth/Id,Year/Year,Year/ID,Editor/Title,Editor/ID,GroupApprover/Title,GroupApprover/Id,Site/Site,Site/ID,Domain/Domain,Domain/ID"
+            , "PlantCode,Category,SubCategory,AddType,BillingCycle,BillingMonth,Year,Editor,GroupApprover,Site,Domain"
             , "Id eq '"+ArtId+"'"
       // , sorting,
      ,{ column: 'Order0', isAscending: true },
@@ -111,6 +113,7 @@ const getITDatafilter = async (ArtId: string | number,props: IItProps): Promise<
             results.map((item: { PlantCodeId?: number;
                 CategoryId:any;
                 Category:any;
+                Domain:any;
                 SubCategory:any;
                 AddType:any;
                 Location :any;
@@ -149,6 +152,8 @@ const getITDatafilter = async (ArtId: string | number,props: IItProps): Promise<
                     PlantCode:item.PlantCodeId,
                     CategoryId: item?.Category?.ID?? null,
                     SubCategoryId:item?.SubCategory?.ID?? null, 
+                    DomainId:item?.Domain?.ID?? null,
+                    Domain:item?.Domain?.Domain?? null,
                     SubCategory:item?.SubCategory?.SubCategory?? null,
                     AddTypeId:item?.AddType?.ID?? null,
                     BillingCycleId:item?.BillingCycle?.ID?? null,
