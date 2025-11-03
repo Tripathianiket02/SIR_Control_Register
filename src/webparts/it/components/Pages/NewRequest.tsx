@@ -472,7 +472,7 @@ export const NewRequest: React.FunctionComponent<IItProps> = (props: IItProps) =
                   <br></br>
                   {/* Domain */}
                   {(() => {
-                    const selectedCategory = CategoryMasterData?.find(item => item.Id == formik.values.Category);
+                    const selectedCategory = CategoryMasterData?.find(item => item.Category == formik.values.Category);
                     if (selectedCategory?.Category === "Domain Component") {
                       return (
                         <div className='col-md-3'>

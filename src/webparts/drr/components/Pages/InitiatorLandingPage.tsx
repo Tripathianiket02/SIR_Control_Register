@@ -179,7 +179,7 @@ export const InitiatorLanding: React.FunctionComponent<IDrrProps> = (props: IDrr
 
           <div  className={styles.innertabs}>
           <div className="p-3 bg-white shadow-sm border">
-            <h3 className={`${styles.headingh1} elementheading`}>Initiator Dashboard</h3>
+            <h3 className={`${styles.headingh1} elementheading`}>MIS_6_Weekly Diesel Receipt Report</h3>
     
     <div className='row mr--1' style={{display:'flex',flexWrap: 'wrap',marginRight: '15px'}}>
     

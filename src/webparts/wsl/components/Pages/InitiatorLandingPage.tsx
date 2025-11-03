@@ -185,7 +185,7 @@ export const InitiatorLanding: React.FunctionComponent<IWslProps> = (props: IWsl
 
           <div  className={styles.innertabs}>
           <div className="p-3 bg-white shadow-sm border">
-            <h3 className={`${styles.headingh1} elementheading`}>Initiator Dashboard</h3>
+            <h3 className={`${styles.headingh1} elementheading`}>MIS_4_Weekly Shelf Life Advance Alert Report</h3>
     
     <div className='row mr--1' style={{display:'flex',flexWrap: 'wrap',marginRight: '15px'}}>
     

@@ -124,8 +124,9 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
       'PlantCodeId': parseInt(formValues.PlantCodeId),
       'Location': formValues.Location,
       'OTC': formValues.OTC,
-      'CategoryId': parseInt(formValues.Category),
+      'Category': formValues.Category,
       'SubCategoryId': parseInt(formValues.SubCategory),
+      'DomainId': formValues.Category === "Domain Component" ? parseInt(formValues.Domain) : null,
     };
     if (props.requestType !== 'budgeted') {
       PRRequest['YearId'] = parseInt(formValues.Year),
@@ -149,9 +150,6 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
       PRRequest['BalanceQty'] = formValues.BalanceQty,
       PRRequest['TotalCost'] = formValues.TotalCost,
       PRRequest['SiteId'] = formValues.Site
-    }
-    if(formValues.Domain !== null && formValues.Domain !== undefined && formValues.Domain !== ''){
-       PRRequest['DomainId'] = formValues.Domain
     }
 
     console.log(formValues);
@@ -279,6 +277,7 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
     let selectedvalue = e.target.options[e.target.selectedIndex].text;
     SelectPlantName = CategoryMasterData.filter((item) => item.Category === selectedvalue);
     setSubCateData(SelectPlantName);
+
   }
 
   async function onChangeRequestTypeNew(value) {
@@ -413,8 +412,8 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
                   if (workrequestColl && workrequestColl[0]?.BillingMonthId) {
                     formik.setFieldValue('BillingMonth', workrequestColl[0]?.BillingMonthId);
                   }
-                  if (workrequestColl && workrequestColl[0]?.CategoryId) {
-                    formik.setFieldValue('Category', workrequestColl[0]?.CategoryId);
+                  if (workrequestColl && workrequestColl[0]?.Category) {
+                    formik.setFieldValue('Category', workrequestColl[0]?.Category);
                     CategeoryRequestsOps().getCategoryData(props).then((CategoryData) => {
                       SelectPlantName = CategoryData.filter((item) => item.Category === workrequestColl[0]?.Category);
                       setSubCateData(SelectPlantName);
@@ -429,9 +428,9 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
                   if (workrequestColl && workrequestColl[0]?.YearId) {
                     formik.setFieldValue('Year', workrequestColl[0]?.YearId);
                   }
-                  if (workrequestColl[0]?.Category === "Domain Component" && workrequestColl[0]?.DomainId) {
+                  if (workrequestColl[0]?.Category === "Domain Component") {
                     formik.setFieldValue('Domain', workrequestColl[0]?.DomainId);
-                  }
+                  } 
 
                   // Set request type based on Site/Quantity presence
                   if (workrequestColl && workrequestColl[0]?.SiteBudgeted === 'Yes') {
@@ -537,7 +536,7 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
                                             }}>
                                               <option value="">Select</option>
                                               {/* {CategoryMasterData !== undefined ? Array.from(new Map(CategoryMasterData.map(item => [item.Category, item])).values()).map((Vend) => (<option key={Vend.Id} value={Vend.Id}>{Vend.Category}</option>)) : ''} */}
-                                              {CategoryMasterData !== undefined ? Array.from(new Map(CategoryMasterData.map(item => [item.Category, item])).values()).map((Vend) => (<option key={Vend.Id} value={Vend.Id}>{Vend.Category}</option>)) : ''}
+                                              {CategoryMasterData !== undefined ? Array.from(new Map(CategoryMasterData.map(item => [item.Category, item])).values()).map((Vend) => (<option key={Vend.Category} value={Vend.Category}>{Vend.Category}</option>)) : ''}
                                             </select>
                                             {formik.errors.Category ? (
                                               <div
@@ -556,7 +555,7 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
                                         <br></br>
                                         {/* Domain */}
                                         {(() => {
-                                          // const selectedCategory = CategoryMasterData?.find(item => item.Id == formik.values.Category);
+                                          const selectedCategory = CategoryMasterData?.find(item => item.Category == formik.values.Category);
                                           if (formik.values.Category === "Domain Component") {
                                             return (
                                               <div className='col-md-3'>
@@ -564,7 +563,7 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
                                                 <div>
                                                   <select id='ddlDomain' className='form-control' {...getFieldProps(formik, 'Domain')} onChange={async (e) => {
                                                     formik.setFieldValue('Domain', e.target.value);
-                                                    // await onChangeRequestType2(e, formik);
+                                                    //await onChangeRequestType2(e, formik);
                                                     //formik.handleChange("Domain");
                                                   }}>
                                                     <option value="">Select</option>
@@ -585,6 +584,8 @@ export const EditRequest: React.FunctionComponent<IItProps> = (props: IItProps) 
                                                 </div>
                                               </div>
                                             );
+                                          } else {
+                                            return null;
                                           }
                                           return null;
                                         })()}
